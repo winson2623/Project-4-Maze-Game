@@ -104,6 +104,50 @@ void Player::say() {
 void Player::update() { 
 
 	/*   TODO   */
+	//checks if lookingPaper or "TO DO list" is empty
+	if (m_lookingPaper.empty()) {
+		Entity::state(State::NOEXIT);
+		return;
+	}
+
+	
+	Room nextRoom = m_lookingPaper.peek();
+	m_lookingPaper.pop();
+	move(nextRoom);
+
+	//checks if found exit
+	if (maze()->foundExit(nextRoom)) {
+		move(nextRoom);
+		Entity::state(State::EXIT);
+		return;
+	}
+
+
+	Room current = room();
+	//LOOKS IN EACH DIRECTIONS (west->east->north->south)
+	Room west(current.x() - 1, current.y());
+	if (maze()->open(west) && m_discoveredRooms.search(west) == -42) {
+		m_lookingPaper.push(west);
+		m_discoveredRooms.add_front(west);
+	}
+
+	Room east(current.x() + 1, current.y());
+	if (maze()->open(east) && m_discoveredRooms.search(east) == -42) {
+		m_lookingPaper.push(east);
+		m_discoveredRooms.add_front(east);
+	}
+	
+	Room north(current.x(), current.y() - 1);
+	if (maze()->open(north) && m_discoveredRooms.search(north) == -42) {
+		m_lookingPaper.push(north);
+		m_discoveredRooms.add_front(north);
+	}
+
+	Room south(current.x(), current.y() + 1);
+	if (maze()->open(south) && m_discoveredRooms.search(south) == -42) {
+		m_lookingPaper.push(south);
+		m_discoveredRooms.add_front(south);
+	}
 
 	if (BACKTRACKENABLED) {
 		// Set by the settings file, if BACKTRACKENABLED is false, then
