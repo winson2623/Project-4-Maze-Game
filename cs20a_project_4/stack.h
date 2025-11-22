@@ -41,33 +41,32 @@ Stack<Type>::Stack():list() {}
 
 template<typename Type>
 void Stack<Type>::push(Type item) {
-	/*   TODO   */
+	list.add_front(item);
 }
 
 
 template<typename Type>
 void Stack<Type>::pop() {
-	/*   TODO   */
+	if (!list.empty()) {
+		list.remove_front();
+	}
 }
 
 template<typename Type>
 bool Stack<Type>::empty() const {
-	/*   TODO   */
-	return false;
+	return list.empty();
 }
 
 
 template<typename Type>
 Type Stack<Type>::peek() const {
-	/*   TODO   */
-	Type retval{};
-	return retval;
+	return list.front();
 }
 
 
 template<typename Type>
 void Stack<Type>::print() const {
-	/*   TODO   */
+	list.print();
 
 }
 
